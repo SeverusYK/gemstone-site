@@ -1,39 +1,26 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/lib/data";
 import "./globals.css";
 
-/* ── Font ────────────────────────────────────────────────────────
- *  PLACEHOLDER — Noto Sans KR is a safe Korean + Latin default.
- *
- *  This template does NOT ship a fixed font. During the Discovery
- *  phase (see .harness/agents/planner.md), the planner asks the
- *  user about mood / reference / tone and the designer picks
- *  1–2 Google Fonts that actually match the project.
- *
- *  How to swap:
- *  1. Pick fonts from https://fonts.google.com (filter: Korean if needed)
- *  2. Change the import below — e.g.
- *     `import { Nanum_Myeongjo, Black_Han_Sans } from "next/font/google"`
- *  3. For an editorial look, pair a display font (headings) with a
- *     clean sans (body) — expose both as CSS variables and use
- *     them via `font-[var(--font-display)]` / `font-sans`.
- *  4. Update the `className` on <html> to include every variable.
- *
- *  Common Korean-friendly Google Fonts:
- *  - Noto Sans KR (neutral, all-purpose)
- *  - Nanum Gothic / Nanum Myeongjo (editorial)
- *  - Gowun Dodum (soft, rounded)
- *  - IBM Plex Sans KR (tech, geometric)
- *  - Black Han Sans (display, headline-only)
- *  - Jua / Do Hyeon (playful, hand-drawn)
+/* ── Fonts ──────────────────────────────────────────────────────
+ *  Display: Space Grotesk — geometric, technical headline font
+ *  Mono:    JetBrains Mono — IDE/terminal feel for labels & code
+ *  Body:    Pretendard — loaded via CDN in globals.css
  * ───────────────────────────────────────────────────────────── */
-const fontSans = Noto_Sans_KR({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
-  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -51,11 +38,11 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com'
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: siteConfig.name,
+    default: `${siteConfig.name} — ${siteConfig.tagline}`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: [siteConfig.name],
+  keywords: [siteConfig.name, "데이터 분석", "머신러닝", "파이썬", "대학 동아리"],
   authors: [{ name: siteConfig.name }],
   robots: {
     index: true,
@@ -67,18 +54,14 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: BASE_URL,
     siteName: siteConfig.name,
-    title: siteConfig.name,
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
-    // OG 이미지는 src/app/opengraph-image.tsx 가 자동 생성 (동적 PNG)
   },
   twitter: {
     card: 'summary_large_image',
-    title: siteConfig.name,
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
-    // twitter 이미지도 opengraph-image 를 자동 재사용
   },
-  // favicon 은 src/app/icon.svg 에서 자동 감지
-  // 구글 서치콘솔 & 네이버 서치어드바이저 인증 코드 (.env.local에서 설정)
   ...(process.env.GOOGLE_SITE_VERIFICATION && {
     verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
   }),
@@ -93,8 +76,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={fontSans.variable}>
-      <body className="font-sans">
+    <html
+      lang="ko"
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+    >
+      <body>
         {children}
         <Analytics />
         <SpeedInsights />

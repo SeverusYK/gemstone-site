@@ -1,54 +1,60 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 @import "tailwindcss";
 
 /* =============================================================================
-   Tailwind v4 Theme Configuration
+   GEMSTONE Design System — Tailwind v4 Theme
    ============================================================================= */
 @theme {
-  /* -- Brand Colors -- */
-  /* Change these to match your brand identity */
-  --color-brand-50: #f0f9ff;
-  --color-brand-100: #e0f2fe;
-  --color-brand-200: #bae6fd;
-  --color-brand-300: #7dd3fc;
-  --color-brand-400: #38bdf8;
-  --color-brand-500: #0ea5e9;
-  --color-brand-600: #0284c7;
-  --color-brand-700: #0369a1;
-  --color-brand-800: #075985;
-  --color-brand-900: #0c4a6e;
-  --color-brand-950: #082f49;
+  /* -- Gemstone Palette -- */
+  --color-void: #000000;
+  --color-neon: #CCFF00;
+  --color-panel: #121212;
+  --color-pure: #FFFFFF;
+  --color-grid: #333333;
+  --color-neon-dim: #ccff0026;
+  --color-neon-glow: #ccff0040;
+  --color-muted: #888888;
 
-  /* -- Font Family --
-   * `--font-sans` is injected by `next/font/google` in layout.tsx.
-   * If the designer adds a display font for headings, expose it as
-   * `--font-display` here too and apply via `font-[var(--font-display)]`.
-   */
-  --font-sans: var(--font-sans), system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    sans-serif;
+  /* -- Font Family -- */
+  --font-display: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', 'Courier New', monospace;
+  --font-body: 'Pretendard', var(--font-sans), system-ui, -apple-system, sans-serif;
 
   /* -- Animations -- */
   --animate-fade-in: fadeIn 0.8s ease-out forwards;
   --animate-slide-up: slideUp 0.6s ease-out forwards;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-pulse-neon: pulseNeon 2s ease-in-out infinite;
+  --animate-scan: scanline 8s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
 
   @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
   }
 
   @keyframes slideUp {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @keyframes pulseNeon {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
 }
 
@@ -60,10 +66,102 @@ html {
 }
 
 body {
-  @apply bg-white text-gray-900 antialiased;
+  background-color: var(--color-void);
+  color: var(--color-pure);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Selection color */
+/* Selection */
 ::selection {
-  @apply bg-brand-200 text-brand-900;
+  background: var(--color-neon-glow);
+  color: var(--color-neon);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-grid);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon);
+}
+
+/* =============================================================================
+   Utility Classes
+   ============================================================================= */
+
+/* Grid background pattern */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: center center;
+}
+
+/* Neon text glow */
+.text-glow {
+  text-shadow: 0 0 20px var(--color-neon-glow), 0 0 40px var(--color-neon-dim);
+}
+
+/* Panel border style */
+.border-system {
+  border: 1px solid var(--color-grid);
+}
+
+/* Glitch hover effect */
+.glitch-hover {
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.glitch-hover:hover {
+  animation: glitchShake 0.2s ease-in-out;
+}
+
+@keyframes glitchShake {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, 2px); }
+  80% { transform: translate(1px, -2px); }
+}
+
+/* Scanline overlay */
+.scanline-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--color-neon-dim),
+    transparent
+  );
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Mono label style */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }

@@ -4,17 +4,16 @@ import { forwardRef, type ButtonHTMLAttributes } from "react";
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// -- Button Variants --
-// Add or modify variants to match your design system.
+// -- Button Variants (Gemstone Palette) --
 const variants = {
   primary:
-    "bg-brand-500 text-white hover:bg-brand-600 focus-visible:ring-brand-500",
+    "bg-neon text-void hover:bg-void hover:text-neon border-2 border-neon focus-visible:ring-neon",
   secondary:
-    "bg-gray-100 text-gray-900 hover:bg-gray-200 focus-visible:ring-gray-400",
+    "bg-panel text-pure hover:bg-grid focus-visible:ring-grid border-2 border-grid",
   outline:
-    "border-2 border-brand-500 text-brand-500 hover:bg-brand-50 focus-visible:ring-brand-500",
+    "border-2 border-neon text-neon hover:bg-neon hover:text-void focus-visible:ring-neon",
   ghost:
-    "text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus-visible:ring-gray-400",
+    "text-muted hover:bg-panel hover:text-pure focus-visible:ring-grid",
 };
 
 const sizes = {
@@ -31,15 +30,15 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 /**
- * Animated button component with multiple variants.
+ * Animated button component with Gemstone design system.
  * Supports primary, secondary, outline, and ghost styles.
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", children, href, ...props }, ref) => {
     const classes = cn(
-      "inline-flex items-center justify-center rounded-xl font-semibold",
-      "transition-colors duration-200",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+      "inline-flex items-center justify-center font-mono font-semibold tracking-wider uppercase",
+      "transition-all duration-200",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-void",
       "disabled:pointer-events-none disabled:opacity-50",
       variants[variant],
       sizes[size],
