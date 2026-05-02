@@ -19,10 +19,10 @@ export function Execute() {
 
       {/* Photo background */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 pointer-events-none mix-blend-luminosity"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 pointer-events-none"
         style={{ backgroundImage: "url('/joincrew.png')" }} 
       />
-      <div className="absolute inset-0 bg-void/80 pointer-events-none" />
+      <div className="absolute inset-0 bg-void/60 pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-[1400px] text-center">
         {/* Section label */}
