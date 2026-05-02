@@ -5,12 +5,16 @@ import { motion, useInView } from "framer-motion";
 import { curriculumSteps } from "@/lib/data";
 
 const codeLines = [
-  { text: "# GEMSTONE CURRICULUM v2.0", type: "comment" as const },
+  { text: "# ✨ 활동 개요", type: "comment" as const },
+  { text: "activity_overview = {", type: "keyword" as const },
+  { text: '    "체계적인 단계별 과정": "기초부터 실전까지 연결되는 커리큘럼",', type: "string" as const },
+  { text: '    "실전 프로젝트 중심": "각 단계에서 팀·개인 프로젝트 수행",', type: "string" as const },
+  { text: '    "현직자 멘토링": "졸업 선배 및 현업 멘토가 함께하는 코드 리뷰",', type: "string" as const },
+  { text: '    "네트워킹": "다양한 학교의 친구들과 협업과 성장"', type: "string" as const },
+  { text: "}", type: "keyword" as const },
   { text: "", type: "blank" as const },
   { text: 'if passion_level == "MAX":', type: "keyword" as const },
   { text: '    print("WELCOME TO GEMSTONE")', type: "string" as const },
-  { text: "", type: "blank" as const },
-  { text: "# ─── Learning Pipeline ───", type: "comment" as const },
 ];
 
 export function Initialization() {
@@ -63,7 +67,7 @@ export function Initialization() {
             </div>
 
             {/* Code content */}
-            <div className="p-5 md:p-6">
+            <div className="p-5 md:p-6 overflow-x-auto whitespace-nowrap">
               {codeLines.map((line, i) => (
                 <motion.div
                   key={i}
@@ -118,7 +122,7 @@ export function Initialization() {
                     <h4 className="font-display text-base font-bold mb-1">
                       {item.title}
                     </h4>
-                    <p className="text-sm text-muted leading-relaxed">
+                    <p className="text-sm text-muted leading-relaxed whitespace-pre-wrap">
                       {item.description}
                     </p>
                   </div>

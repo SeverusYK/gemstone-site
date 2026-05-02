@@ -17,6 +17,13 @@ export function Execute() {
       {/* Grid background */}
       <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />
 
+      {/* Photo background */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 pointer-events-none mix-blend-luminosity"
+        style={{ backgroundImage: "url('/joincrew.png')" }} 
+      />
+      <div className="absolute inset-0 bg-void/80 pointer-events-none" />
+
       <div className="relative z-10 mx-auto max-w-[1400px] text-center">
         {/* Section label */}
         <motion.p
@@ -78,6 +85,26 @@ export function Execute() {
         >
           REDIRECT → GOOGLE_FORM // APPLICATION_PORTAL
         </motion.p>
+
+        {/* GitHub Link */}
+        <motion.div
+          className="mt-6"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.9, duration: 0.6 }}
+        >
+          <a
+            href="https://github.com/Data-Gemstone"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 font-mono text-sm text-muted hover:text-neon transition-colors group"
+          >
+            <span className="group-hover:text-neon">GITHUB_REPOSITORY</span>
+            <span className="text-[10px] tracking-wider border-b border-transparent group-hover:border-neon pb-0.5">
+              @Data-Gemstone
+            </span>
+          </a>
+        </motion.div>
       </div>
     </section>
   );

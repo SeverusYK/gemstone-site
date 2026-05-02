@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { projects, type Project } from "@/lib/data";
-import { X, ExternalLink } from "lucide-react";
+import { X, ExternalLink, ArrowRight } from "lucide-react";
+
+const PREVIEW_COUNT = 6;
 
 function ProjectModal({
   project,
@@ -63,12 +66,12 @@ function ProjectModal({
           </h3>
           <p className="text-sm text-muted mb-4">{project.titleKr}</p>
 
-          <p className="text-sm text-pure/80 leading-relaxed mb-6">
+          <p className="text-sm text-pure/80 leading-relaxed mb-6 whitespace-pre-wrap">
             {project.description}
           </p>
 
           {/* Accuracy */}
-          {project.accuracy && (
+          {project.accuracy && project.accuracy !== "—" && (
             <div className="flex items-center justify-between mb-4 py-3 border-t border-b border-grid">
               <span className="font-mono text-[10px] tracking-wider text-muted">
                 MODEL_ACCURACY
@@ -76,6 +79,20 @@ function ProjectModal({
               <span className="font-mono text-lg font-bold text-neon">
                 {project.accuracy}
               </span>
+            </div>
+          )}
+
+          {/* Tags */}
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-2 py-0.5 bg-neon/10 border border-neon/20 font-mono text-[10px] tracking-wider text-neon"
+                >
+                  #{tag}
+                </span>
+              ))}
             </div>
           )}
 
@@ -101,6 +118,8 @@ export function DataArchive() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
+  const preview = projects.slice(0, PREVIEW_COUNT);
+
   return (
     <>
       <section
@@ -123,19 +142,19 @@ export function DataArchive() {
               ARCHIVE
             </h2>
             <p className="mt-4 text-muted text-sm md:text-base max-w-md">
-              QUERY_RESULT_ARCHIVE — Status: EXECUTED
+              QUERY_RESULT_ARCHIVE — Status: EXECUTED &nbsp;·&nbsp; {projects.length} RECORDS TOTAL
             </p>
           </motion.div>
 
-          {/* Project grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {projects.map((project, i) => (
+          {/* Project grid — 6 preview cards, 2 col → 3 col on wide screens */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 mb-10">
+            {preview.map((project, i) => (
               <motion.button
                 key={project.id}
                 className="text-left border-system bg-panel/30 hover:bg-panel/80 p-6 transition-all duration-300 group cursor-pointer"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.2 + i * 0.1, duration: 0.6 }}
+                transition={{ delay: 0.2 + i * 0.08, duration: 0.6 }}
                 onClick={() => setSelected(project)}
                 whileHover={{ y: -2 }}
               >
@@ -145,8 +164,24 @@ export function DataArchive() {
                     {project.id}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-neon" />
-                    <span className="font-mono text-[10px] tracking-wider text-neon">
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${
+                        project.status === "EXECUTED"
+                          ? "bg-neon"
+                          : project.status === "IN_PROGRESS"
+                          ? "bg-yellow-400"
+                          : "bg-muted"
+                      }`}
+                    />
+                    <span
+                      className={`font-mono text-[10px] tracking-wider ${
+                        project.status === "EXECUTED"
+                          ? "text-neon"
+                          : project.status === "IN_PROGRESS"
+                          ? "text-yellow-400"
+                          : "text-muted"
+                      }`}
+                    >
                       {project.status}
                     </span>
                   </div>
@@ -158,17 +193,19 @@ export function DataArchive() {
                 </p>
 
                 {/* Title */}
-                <h3 className="font-display text-lg font-bold group-hover:text-neon transition-colors duration-200 mb-1">
+                <h3 className="font-display text-base font-bold group-hover:text-neon transition-colors duration-200 mb-1">
                   {project.title}
                 </h3>
                 <p className="text-sm text-muted mb-4">{project.titleKr}</p>
 
                 {/* Bottom row */}
                 <div className="flex items-center justify-between pt-4 border-t border-grid">
-                  {project.accuracy && (
+                  {project.accuracy && project.accuracy !== "—" ? (
                     <span className="font-mono text-xs text-neon">
                       ACC: {project.accuracy}
                     </span>
+                  ) : (
+                    <span className="font-mono text-xs text-muted">—</span>
                   )}
                   <span className="font-mono text-[10px] text-muted group-hover:text-pure transition-colors flex items-center gap-1">
                     OPEN <ExternalLink size={10} />
@@ -177,6 +214,29 @@ export function DataArchive() {
               </motion.button>
             ))}
           </div>
+
+          {/* View all link */}
+          <motion.div
+            className="flex items-center gap-4"
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.75, duration: 0.5 }}
+          >
+            {/* Divider line */}
+            <div className="flex-1 h-px bg-grid" />
+            <Link
+              href="/archive"
+              className="group flex items-center gap-3 px-5 py-3 border border-grid hover:border-neon bg-panel/40 hover:bg-neon/10 transition-all duration-300"
+            >
+              <span className="font-mono text-xs tracking-[0.15em] text-muted group-hover:text-neon transition-colors">
+                VIEW ALL {projects.length} RECORDS
+              </span>
+              <ArrowRight
+                size={14}
+                className="text-muted group-hover:text-neon group-hover:translate-x-1 transition-all duration-300"
+              />
+            </Link>
+          </motion.div>
         </div>
       </section>
 
