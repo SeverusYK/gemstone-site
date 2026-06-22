@@ -1,19 +1,27 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { DM_Serif_Display, Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/lib/data";
 import "./globals.css";
 
 /* ── Fonts ──────────────────────────────────────────────────────
- *  Display: Space Grotesk — geometric, technical headline font
- *  Mono:    JetBrains Mono — IDE/terminal feel for labels & code
- *  Body:    Pretendard — loaded via CDN in globals.css
+ *  Display: DM Serif Display — elegant, warm serif for headlines
+ *  Body:    Inter — clean, modern sans-serif
+ *  Mono:    JetBrains Mono — code/terminal feel
+ *  Korean:  Pretendard — loaded via CDN in globals.css
  * ───────────────────────────────────────────────────────────── */
-const spaceGrotesk = Space_Grotesk({
+const dmSerif = DM_Serif_Display({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-dm-serif",
+  display: "swap",
+});
+
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -24,15 +32,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-/* ── SEO Metadata ─────────────────────────────────────
- *  1. .env.local의 NEXT_PUBLIC_SITE_URL을 실제 도메인으로 변경하세요.
- *  2. public/og-image.png (1200×630px) 이미지를 추가하면
- *     카카오톡/SNS 공유 시 미리보기가 표시됩니다.
- *  3. Google Search Console → 소유권 확인 → HTML 태그에서 코드 복사
- *     → .env.local의 GOOGLE_SITE_VERIFICATION에 붙여넣기
- *  4. 네이버 서치어드바이저 → 사이트 등록 → HTML 태그에서 코드 복사
- *     → .env.local의 NAVER_SITE_VERIFICATION에 붙여넣기
- * ──────────────────────────────────────────────────── */
+/* ── SEO Metadata ───────────────────────────────────────────── */
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com'
 
 export const metadata: Metadata = {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: [siteConfig.name, "데이터 분석", "머신러닝", "파이썬", "대학 동아리"],
+  keywords: [siteConfig.name, "데이터 분석", "머신러닝", "파이썬", "대학 동아리", "Query-data"],
   authors: [{ name: siteConfig.name }],
   robots: {
     index: true,
@@ -78,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={`${dmSerif.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body>
         {children}

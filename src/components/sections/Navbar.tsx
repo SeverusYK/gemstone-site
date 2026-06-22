@@ -15,7 +15,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -26,7 +25,7 @@ export function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-void/80 backdrop-blur-md border-b border-grid"
+            ? "bg-cream/90 backdrop-blur-md border-b border-border shadow-sm"
             : "bg-transparent"
         }`}
       >
@@ -34,13 +33,13 @@ export function Navbar() {
           {/* Logo */}
           <a
             href="#"
-            className="font-display text-lg font-bold tracking-tight text-neon"
+            className="font-display text-xl tracking-tight text-ink"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
-            GEMSTONE
+            Query-data
           </a>
 
           {/* Desktop Nav */}
@@ -49,7 +48,7 @@ export function Navbar() {
               <a
                 key={item.href}
                 href={item.href}
-                className="font-mono text-xs tracking-[0.15em] text-muted hover:text-neon transition-colors duration-200"
+                className="font-sans text-sm text-subtle hover:text-ink transition-colors duration-200"
               >
                 {item.label}
               </a>
@@ -59,7 +58,7 @@ export function Navbar() {
           {/* Mobile Hamburger */}
           <button
             id="mobile-menu-toggle"
-            className="md:hidden text-pure hover:text-neon transition-colors"
+            className="md:hidden text-ink hover:text-accent transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -72,7 +71,7 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-void/95 backdrop-blur-xl"
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-10 bg-cream/98 backdrop-blur-xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -82,7 +81,7 @@ export function Navbar() {
               <motion.a
                 key={item.href}
                 href={item.href}
-                className="font-mono text-2xl tracking-[0.2em] text-pure hover:text-neon transition-colors"
+                className="font-display text-3xl text-ink hover:text-accent transition-colors"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.3 }}

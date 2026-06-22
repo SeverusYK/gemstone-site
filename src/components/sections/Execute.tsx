@@ -12,48 +12,38 @@ export function Execute() {
     <section
       id="execute"
       ref={sectionRef}
-      className="relative py-32 md:py-44 px-5 md:px-8 border-t border-grid overflow-hidden"
+      className="relative py-32 md:py-44 px-5 md:px-8 border-t border-border overflow-hidden"
     >
-      {/* Grid background */}
-      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />
-
-      {/* Photo background */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 pointer-events-none"
-        style={{ backgroundImage: "url('/joincrew.png')" }} 
-      />
-      <div className="absolute inset-0 bg-void/60 pointer-events-none" />
-
       <div className="relative z-10 mx-auto max-w-[1400px] text-center">
         {/* Section label */}
         <motion.p
-          className="label-mono text-neon mb-6"
+          className="font-mono text-xs tracking-[0.12em] text-accent mb-6"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6 }}
         >
-          [ 04 ]
+          04
         </motion.p>
 
         {/* Big CTA text */}
         <motion.h2
-          className="font-display text-4xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
+          className="font-display text-4xl md:text-7xl lg:text-8xl text-ink mb-6"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.2, duration: 0.7 }}
         >
-          JOIN THE
+          Join the
           <br />
-          <span className="text-neon">CREW</span>
+          <span className="italic text-accent">Crew.</span>
         </motion.h2>
 
         <motion.p
-          className="font-mono text-sm md:text-base text-muted mb-10 max-w-md mx-auto"
+          className="text-base md:text-lg text-subtle mb-10 max-w-md mx-auto"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          데이터를 해체하고 재조립할 새로운 원석을 호출합니다.
+          데이터에 올바른 질문을 던질 새로운 동료를 기다립니다.
         </motion.p>
 
         {/* CTA Button */}
@@ -66,45 +56,22 @@ export function Execute() {
             href={links.applyForm}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-3 px-10 py-5 bg-neon text-void font-mono text-sm md:text-base font-bold tracking-[0.1em] uppercase transition-all duration-200 hover:bg-void hover:text-neon border-2 border-neon glitch-hover"
+            className="group relative inline-flex items-center gap-3 px-10 py-4 bg-ink text-cream font-sans text-sm md:text-base font-semibold tracking-wide rounded-full transition-all duration-300 hover:bg-accent hover:shadow-lg hover:shadow-accent/20"
           >
-            <span className="font-mono">&gt;_</span>
-            <span>RUN_SCRIPT</span>
-
-            {/* Hover glow */}
-            <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-[0_0_30px_rgba(204,255,0,0.3),0_0_60px_rgba(204,255,0,0.1)]" />
+            <span>지원하기</span>
+            <span className="transition-transform group-hover:translate-x-1">→</span>
           </a>
         </motion.div>
 
         {/* Subtext */}
         <motion.p
-          className="font-mono text-[10px] tracking-[0.2em] text-grid mt-8"
+          className="font-mono text-[10px] tracking-[0.15em] text-subtle mt-8"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
-          REDIRECT → GOOGLE_FORM // APPLICATION_PORTAL
+          Tally 양식으로 이동합니다
         </motion.p>
-
-        {/* GitHub Link */}
-        <motion.div
-          className="mt-6"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.9, duration: 0.6 }}
-        >
-          <a
-            href="https://github.com/Data-Gemstone"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-mono text-sm text-muted hover:text-neon transition-colors group"
-          >
-            <span className="group-hover:text-neon">GITHUB_REPOSITORY</span>
-            <span className="text-[10px] tracking-wider border-b border-transparent group-hover:border-neon pb-0.5">
-              @Data-Gemstone
-            </span>
-          </a>
-        </motion.div>
       </div>
     </section>
   );

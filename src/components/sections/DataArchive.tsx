@@ -25,31 +25,37 @@ function ProjectModal({
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-void/85 backdrop-blur-sm"
+        className="absolute inset-0 bg-ink/40 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Modal */}
       <motion.div
-        className="relative w-full max-w-lg border-system bg-panel z-10"
+        className="relative w-full max-w-lg card-warm z-10"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
       >
         {/* Modal header */}
-        <div className="flex items-center justify-between p-4 border-b border-grid">
+        <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-[10px] tracking-wider text-muted">
+            <span className="font-mono text-[10px] tracking-wider text-subtle">
               {project.id}
             </span>
-            <span className="px-2 py-0.5 bg-neon/10 border border-neon/30 font-mono text-[10px] text-neon tracking-wider">
+            <span className={`px-2 py-0.5 rounded-full font-mono text-[10px] tracking-wider ${
+              project.status === "EXECUTED"
+                ? "bg-green-50 text-green-700 border border-green-200"
+                : project.status === "IN_PROGRESS"
+                ? "bg-amber-50 text-amber-700 border border-amber-200"
+                : "bg-gray-50 text-gray-500 border border-gray-200"
+            }`}>
               {project.status}
             </span>
           </div>
           <button
             onClick={onClose}
-            className="text-muted hover:text-pure transition-colors"
+            className="text-subtle hover:text-ink transition-colors"
             aria-label="Close modal"
           >
             <X size={18} />
@@ -58,25 +64,25 @@ function ProjectModal({
 
         {/* Modal body */}
         <div className="p-6">
-          <p className="font-mono text-[10px] tracking-[0.15em] text-neon mb-2">
+          <p className="font-mono text-[10px] tracking-[0.15em] text-accent mb-2">
             {project.field}
           </p>
-          <h3 className="font-display text-xl font-bold mb-1">
+          <h3 className="font-display text-xl text-ink mb-1">
             {project.title}
           </h3>
-          <p className="text-sm text-muted mb-4">{project.titleKr}</p>
+          <p className="text-sm text-subtle mb-4">{project.titleKr}</p>
 
-          <p className="text-sm text-pure/80 leading-relaxed mb-6 whitespace-pre-wrap">
+          <p className="text-sm text-ink-light leading-relaxed mb-6 whitespace-pre-wrap">
             {project.description}
           </p>
 
           {/* Accuracy */}
           {project.accuracy && project.accuracy !== "—" && (
-            <div className="flex items-center justify-between mb-4 py-3 border-t border-b border-grid">
-              <span className="font-mono text-[10px] tracking-wider text-muted">
-                MODEL_ACCURACY
+            <div className="flex items-center justify-between mb-4 py-3 border-t border-b border-border">
+              <span className="font-mono text-[10px] tracking-wider text-subtle">
+                MODEL ACCURACY
               </span>
-              <span className="font-mono text-lg font-bold text-neon">
+              <span className="font-mono text-lg font-bold text-accent">
                 {project.accuracy}
               </span>
             </div>
@@ -88,7 +94,7 @@ function ProjectModal({
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-0.5 bg-neon/10 border border-neon/20 font-mono text-[10px] tracking-wider text-neon"
+                  className="px-2 py-0.5 bg-accent/8 border border-accent/15 rounded-full font-mono text-[10px] tracking-wider text-accent"
                 >
                   #{tag}
                 </span>
@@ -101,7 +107,7 @@ function ProjectModal({
             {project.tech.map((t) => (
               <span
                 key={t}
-                className="px-2.5 py-1 bg-void border border-grid font-mono text-[10px] tracking-wider text-muted"
+                className="px-2.5 py-1 bg-cream-deep border border-border rounded-full font-mono text-[10px] tracking-wider text-subtle"
               >
                 {t}
               </span>
@@ -125,7 +131,7 @@ export function DataArchive() {
       <section
         id="archive"
         ref={sectionRef}
-        className="relative py-24 md:py-32 px-5 md:px-8 border-t border-grid"
+        className="relative py-24 md:py-32 px-5 md:px-8 border-t border-border"
       >
         <div className="mx-auto max-w-[1400px]">
           {/* Section header */}
@@ -135,83 +141,106 @@ export function DataArchive() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
-            <p className="label-mono text-neon mb-2">[ 02 ]</p>
-            <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight">
-              DATA
-              <br />
-              ARCHIVE
+            <p className="font-mono text-xs tracking-[0.12em] text-accent mb-3">02</p>
+            <h2 className="font-display text-3xl md:text-5xl text-ink">
+              Project Archive
             </h2>
-            <p className="mt-4 text-muted text-sm md:text-base max-w-md">
-              QUERY_RESULT_ARCHIVE — Status: EXECUTED &nbsp;·&nbsp; {projects.length} RECORDS TOTAL
+            <p className="mt-4 text-subtle text-sm md:text-base max-w-md">
+              {projects.length}개의 프로젝트 아카이브
             </p>
           </motion.div>
 
-          {/* Project grid — 6 preview cards, 2 col → 3 col on wide screens */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 mb-10">
+          {/* Project list (Row layout) */}
+          <div className="flex flex-col gap-3 mb-10">
             {preview.map((project, i) => (
-              <motion.button
+              <motion.div
                 key={project.id}
-                className="text-left border-system bg-panel/30 hover:bg-panel/80 p-6 transition-all duration-300 group cursor-pointer"
-                initial={{ opacity: 0, y: 30 }}
+                className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-5 border-b border-border/80 hover:bg-accent/5 cursor-pointer transition-all duration-200 group gap-4 w-full bg-card/40 rounded-xl hover:shadow-sm"
+                initial={{ opacity: 0, y: 15 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.2 + i * 0.08, duration: 0.6 }}
+                transition={{ delay: 0.1 + i * 0.05, duration: 0.5 }}
                 onClick={() => setSelected(project)}
-                whileHover={{ y: -2 }}
+                whileHover={{ x: 4 }}
               >
-                {/* Card header */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="font-mono text-[10px] tracking-wider text-muted">
+                {/* Left: ID, Field Badge & Title */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 flex-1 min-w-0">
+                  {/* ID */}
+                  <span className="font-mono text-xs font-bold text-subtle/80 shrink-0 sm:w-16">
                     {project.id}
                   </span>
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        project.status === "EXECUTED"
-                          ? "bg-neon"
-                          : project.status === "IN_PROGRESS"
-                          ? "bg-yellow-400"
-                          : "bg-muted"
-                      }`}
-                    />
-                    <span
-                      className={`font-mono text-[10px] tracking-wider ${
-                        project.status === "EXECUTED"
-                          ? "text-neon"
-                          : project.status === "IN_PROGRESS"
-                          ? "text-yellow-400"
-                          : "text-muted"
-                      }`}
-                    >
-                      {project.status}
+                  
+                  {/* Field Badge */}
+                  <span className="font-mono text-[9px] tracking-wider text-accent bg-accent/8 border border-accent/15 px-2 py-0.5 rounded shrink-0 self-start sm:self-auto uppercase">
+                    {project.field}
+                  </span>
+
+                  {/* Title */}
+                  <div className="flex flex-col min-w-0">
+                    <span className="font-sans text-sm font-bold text-ink group-hover:text-accent transition-colors duration-200 truncate">
+                      {project.title}
+                    </span>
+                    <span className="font-sans text-xs text-subtle mt-0.5 truncate">
+                      {project.titleKr}
                     </span>
                   </div>
                 </div>
 
-                {/* Field tag */}
-                <p className="font-mono text-[10px] tracking-[0.15em] text-muted mb-2">
-                  {project.field}
-                </p>
+                {/* Right: Tech Stack, Accuracy & Status Badge */}
+                <div className="flex items-center gap-4 md:gap-8 justify-between md:justify-end shrink-0">
+                  {/* Tech Stack */}
+                  <div className="hidden lg:flex flex-wrap gap-1.5 max-w-xs justify-end">
+                    {project.tech.slice(0, 3).map((t) => (
+                      <span 
+                        key={t} 
+                        className="px-2 py-0.5 bg-cream-deep border border-border/60 rounded text-[10px] font-mono text-subtle"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                    {project.tech.length > 3 && (
+                      <span className="text-[10px] font-mono text-subtle/60 self-center">
+                        +{project.tech.length - 3}
+                      </span>
+                    )}
+                  </div>
 
-                {/* Title */}
-                <h3 className="font-display text-base font-bold group-hover:text-neon transition-colors duration-200 mb-1">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-muted mb-4">{project.titleKr}</p>
+                  {/* Accuracy */}
+                  <div className="w-16 text-right hidden sm:block">
+                    {project.accuracy && project.accuracy !== "—" ? (
+                      <span className="font-mono text-xs font-bold text-accent bg-accent/5 px-2 py-1 rounded">
+                        {project.accuracy}
+                      </span>
+                    ) : (
+                      <span className="font-mono text-xs text-subtle/40">—</span>
+                    )}
+                  </div>
 
-                {/* Bottom row */}
-                <div className="flex items-center justify-between pt-4 border-t border-grid">
-                  {project.accuracy && project.accuracy !== "—" ? (
-                    <span className="font-mono text-xs text-neon">
-                      ACC: {project.accuracy}
+                  {/* Status Badge */}
+                  <div className="flex items-center gap-2 w-24 justify-end">
+                    <span className={`w-1.5 h-1.5 rounded-full ${
+                      project.status === "EXECUTED" 
+                        ? "bg-green-500" 
+                        : project.status === "IN_PROGRESS" 
+                        ? "bg-amber-400" 
+                        : "bg-gray-300"
+                    }`} />
+                    <span className={`font-mono text-[10px] tracking-wider font-semibold ${
+                      project.status === "EXECUTED" 
+                        ? "text-green-600" 
+                        : project.status === "IN_PROGRESS" 
+                        ? "text-amber-600" 
+                        : "text-subtle"
+                    }`}>
+                      {project.status}
                     </span>
-                  ) : (
-                    <span className="font-mono text-xs text-muted">—</span>
-                  )}
-                  <span className="font-mono text-[10px] text-muted group-hover:text-pure transition-colors flex items-center gap-1">
-                    OPEN <ExternalLink size={10} />
-                  </span>
+                  </div>
+
+                  {/* Arrow / Detail view icon */}
+                  <div className="text-subtle group-hover:text-accent transition-colors pl-2">
+                    <ExternalLink size={14} />
+                  </div>
                 </div>
-              </motion.button>
+              </motion.div>
             ))}
           </div>
 
@@ -222,18 +251,17 @@ export function DataArchive() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.75, duration: 0.5 }}
           >
-            {/* Divider line */}
-            <div className="flex-1 h-px bg-grid" />
+            <div className="flex-1 h-px bg-border" />
             <Link
               href="/archive"
-              className="group flex items-center gap-3 px-5 py-3 border border-grid hover:border-neon bg-panel/40 hover:bg-neon/10 transition-all duration-300"
+              className="group flex items-center gap-3 px-5 py-3 border border-border rounded-full hover:border-accent bg-card hover:bg-accent/5 transition-all duration-300"
             >
-              <span className="font-mono text-xs tracking-[0.15em] text-muted group-hover:text-neon transition-colors">
-                VIEW ALL {projects.length} RECORDS
+              <span className="font-sans text-xs tracking-wide text-subtle group-hover:text-accent transition-colors">
+                View all {projects.length} projects
               </span>
               <ArrowRight
                 size={14}
-                className="text-muted group-hover:text-neon group-hover:translate-x-1 transition-all duration-300"
+                className="text-subtle group-hover:text-accent group-hover:translate-x-1 transition-all duration-300"
               />
             </Link>
           </motion.div>
