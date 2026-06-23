@@ -74,7 +74,7 @@ export function Hero() {
             >
               {[
                 { label: "MEMBERS", value: "24+" },
-                { label: "PROJECTS", value: "47" },
+                { label: "PROJECTS", value: "52" },
                 { label: "CURRICULUM", value: "3 Tracks" },
                 { label: "MENTORING", value: "Active" },
               ].map((item) => (
