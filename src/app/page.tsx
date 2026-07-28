@@ -9,10 +9,12 @@ import { Initialization } from "@/components/sections/Initialization";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { Execute } from "@/components/sections/Execute";
 import { Footer } from "@/components/sections/Footer";
+import { RecruitPopup } from "@/components/sections/RecruitPopup";
 
 export default function Home() {
   return (
     <>
+      <RecruitPopup />
       <Navbar />
       <main>
         <Hero />
