@@ -668,5 +668,5 @@ export const curriculumSteps = [
 // =============================================================================
 
 export const links = {
-  applyForm: "https://tally.so/r/Pd40EB",
+  applyForm: "https://tally.so/r/D46BRq",
 };
